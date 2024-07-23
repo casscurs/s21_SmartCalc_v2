@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SecondWindow</class>
+ <widget class="QMainWindow" name="SecondWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QCustomPlot" name="widget" native="true"/>
+    </item>
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="2">
+       <widget class="QLabel" name="label_3">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+qproperty-alignment: 'AlignCenter | AlignLeft';
+}
+background-color: white;</string>
+        </property>
+        <property name="text">
+         <string>Xrange</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+qproperty-alignment: 'AlignCenter | AlignLeft';
+}
+background-color: white;</string>
+        </property>
+        <property name="text">
+         <string>Xmin</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QLabel" name="label_5">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+qproperty-alignment: 'AlignCenter | AlignLeft';
+}
+background-color: white;</string>
+        </property>
+        <property name="text">
+         <string>Формула</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="lineEdit_Xmax">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+qproperty-alignment: 'AlignCenter | AlignRight';
+border: 1px solid black;
+}
+background-color: white;</string>
+        </property>
+        <property name="text">
+         <string>100</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QLineEdit" name="lineEdit_Xrange">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+qproperty-alignment: 'AlignCenter | AlignRight';
+border: 1px solid black;
+}
+background-color: white;</string>
+        </property>
+        <property name="text">
+         <string>100</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2" colspan="2">
+       <widget class="QLineEdit" name="lineEdit_formula">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+qproperty-alignment: 'AlignCenter | AlignRight';
+border: 1px solid black;
+}
+background-color: white;</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="3">
+       <widget class="QLineEdit" name="lineEdit_Yrange">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+qproperty-alignment: 'AlignCenter | AlignRight';
+border: 1px solid black;
+}
+background-color: white;</string>
+        </property>
+        <property name="text">
+         <string>100</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="label_Ymax">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+qproperty-alignment: 'AlignCenter | AlignLeft';
+}
+background-color: white;</string>
+        </property>
+        <property name="text">
+         <string>Yrange</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+qproperty-alignment: 'AlignCenter | AlignLeft';
+}
+background-color: white;</string>
+        </property>
+        <property name="text">
+         <string>Xmax</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEdit_Xmin">
+        <property name="styleSheet">
+         <string notr="true">QLabel {
+qproperty-alignment: 'AlignCenter | AlignRight';
+border: 1px solid black;
+}
+background-color: white;</string>
+        </property>
+        <property name="text">
+         <string>-100</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5" rowspan="3">
+       <widget class="QPushButton" name="pushButton_plot">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>20</pointsize>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton {
+background-color: rgb(95, 19, 135);
+color: white;
+border: none;
+}
+QPushButton:pressed {
+background-color: qlineargradient(x1: 0, 1: 0, x2: 0, 2: 1,
+stop: 0 #FF7832, stop: 1 #FF9739);
+}</string>
+        </property>
+        <property name="text">
+         <string>Построить</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QRadioButton" name="radioButton_line">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Линия</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QRadioButton" name="radioButton_points">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+          <bold>true</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Точки</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

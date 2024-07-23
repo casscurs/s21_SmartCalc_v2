@@ -17,6 +17,9 @@ class DepositController : public CalcController {
   DepositModel::StackNode* add = nullptr;
   DepositModel::StackNode* with = nullptr;
 
+  const int kmonthly = DepositModel::MONTHLY;
+  const int kyearly = DepositModel::YEARLY;
+
  public:
   DepositController() = delete;
   DepositModel::InputStr str;

@@ -9,8 +9,7 @@ MainWindow::MainWindow(QWidget* parent)
       creditSum_doubleValidator(0, 1000000000000000, 2, this),
       creditPeriod_doubleValidator(1, 600, 2, this),
       creditPercent_doubleValidator(0, 999, 2, this),
-      depositController(&depositModel)
-{
+      depositController(&depositModel) {
   ui->setupUi(this);
   /* Блок валидатора */
 
@@ -237,7 +236,6 @@ void MainWindow::on_pushButton_calc_clicked() {
 }
 
 void MainWindow::on_pushButton_depCalc_clicked() {
-
   QString input_sum = ui->lineEdit_depSum->text();
   QString input_period = ui->lineEdit_depPeriod->text();
   QString input_percent = ui->lineEdit_depPercent->text();
@@ -255,7 +253,10 @@ void MainWindow::on_pushButton_depCalc_clicked() {
   char_array_percent[byte_array_percent.size()] = '\0';
 
   if (ui->checkBox_cap->isChecked()) depositController.str.capital = 1;
-  if (ui->radioButton_yearly->isChecked()) depositController.str.regularity = depositModel.YEARLY;
+  if (ui->radioButton_yearly->isChecked())
+    depositController.str.regularity = depositController.kyearly;
+  if (ui->radioButton_monthly->isChecked())
+    depositController.str.regularity = depositController.kmonthly;
   depositController.str.deposit_sum_str = char_array_sum;
   depositController.str.percent_str = char_array_percent;
   depositController.str.period_str = char_array_period;
@@ -271,7 +272,8 @@ void MainWindow::on_pushButton_depCalc_clicked() {
         QString::number(depositController.GetDepositData().tax_amount, 'f', 2));
     ui->plainTextEdit_dep->appendPlainText(
         "Сумма на вкладе к концу срока: " +
-        QString::number(depositController.GetDepositData().total_award, 'f', 2));
+        QString::number(depositController.GetDepositData().total_award, 'f',
+                        2));
   } else
     ui->plainTextEdit_dep->setPlainText("Invalid input");
   depositController.PopAndClearStack();
@@ -279,7 +281,6 @@ void MainWindow::on_pushButton_depCalc_clicked() {
 }
 
 void MainWindow::pushToStackAdd() {
-
   QString input_add_sum = ui->lineEdit_AddSum->text();
   QByteArray byte_array_add_sum = input_add_sum.toLocal8Bit();
   char* char_array_add_sum = byte_array_add_sum.data();
@@ -296,14 +297,10 @@ void MainWindow::pushToStackAdd() {
       (add_month < 1 || add_month - (int)add_month > 0)) {
     ui->plainTextEdit_dep->setPlainText("Invalid input");
   } else {
-
     depositController.PushToStackAdd(add_sum, add_month);
-
-
   }
 }
 void MainWindow::pushToStackWith() {
-
   QString input_with_sum = ui->lineEdit_WithSum->text();
   QByteArray byte_array_with_sum = input_with_sum.toLocal8Bit();
   char* char_array_with_sum = byte_array_with_sum.data();
@@ -321,9 +318,6 @@ void MainWindow::pushToStackWith() {
       (with_month < 1 || with_month - (int)with_month > 0)) {
     ui->plainTextEdit_dep->setPlainText("Invalid input");
   } else {
-
     depositController.PushToStackWith(with_sum, with_month);
-
   }
 }
-

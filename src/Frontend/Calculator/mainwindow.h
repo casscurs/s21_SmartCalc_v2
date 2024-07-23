@@ -4,9 +4,9 @@
 #include <QMainWindow>
 #include <QValidator>
 
-#include "../../Backend/controller/s21_calc_controller.hpp"
-#include "../../Backend/controller/s21_credit_controller.hpp"
-#include "../../Backend/controller/s21_deposit_controller.hpp"
+#include "../../Backend/controller/s21_calc_controller.h"
+#include "../../Backend/controller/s21_credit_controller.h"
+#include "../../Backend/controller/s21_deposit_controller.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,8 +21,7 @@ public:
     ~MainWindow();
 
 public:
-    s21::DepositController::StackNode *add = nullptr;
-    s21::DepositController::StackNode *with = nullptr;
+s21::DepositController depositController;
 
 private:
     Ui::MainWindow *ui;
@@ -46,10 +45,8 @@ private slots:
     void on_pushButton_calc_clicked();
     void on_pushButton_depCalc_clicked();
     void pushToStackAdd();
-    void popAndClearStackAdd();
     void pushToStackWith();
-    void popAndClearStackWith();
-   // void on_checkBox_cap_stateChanged(int arg1);
+
 };
 
 #endif // MAINWINDOW_H

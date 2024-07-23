@@ -1,5 +1,5 @@
-#ifndef S21_EXCEPTION_HPP
-#define S21_EXCEPTION_HPP
+#ifndef S21_EXCEPTION_H
+#define S21_EXCEPTION_H
 
 #include <exception>
 #include <string>
@@ -21,4 +21,4 @@ class CalculatorException : public std::exception {
 
 }  // namespace s21
 
-#endif  // S21_EXCEPTION_HPP
+#endif  // S21_EXCEPTION_H

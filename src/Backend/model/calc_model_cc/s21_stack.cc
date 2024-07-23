@@ -1,6 +1,6 @@
-#include "../s21_calc_model.hpp"
+#include "../s21_calc_model.h"
 namespace s21 {
-CalcModel::StackNode* CalcModel::pushStackNode(StackNode* apex) {
+CalcModel::StackNode* CalcModel::PushStackNode(StackNode* apex) {
   StackNode* item = (StackNode*)calloc(1, sizeof(StackNode));
   if (!item) {
     throw CalculatorException("Memory allocation failed for StackNode");
@@ -13,7 +13,7 @@ CalcModel::StackNode* CalcModel::pushStackNode(StackNode* apex) {
   return (item);
 }
 
-CalcModel::StackNode* CalcModel::popStackNode(StackNode* apex) {
+CalcModel::StackNode* CalcModel::PopStackNode(StackNode* apex) {
   if (!apex) return (nullptr);
   apex->what = 0;
   apex->priority = 0;
@@ -24,29 +24,29 @@ CalcModel::StackNode* CalcModel::popStackNode(StackNode* apex) {
   return (following);
 }
 
-void CalcModel::freeStack(StackNode* apex) {
-  while (apex) apex = popStackNode(apex);
+void CalcModel::FreeStack(StackNode* apex) {
+  while (apex) apex = PopStackNode(apex);
   return;
 }
 
-void CalcModel::sortStackByPriority(StackNode** apex) {
+void CalcModel::SortStackByPriority(StackNode** apex) {
   if (!(*apex) || !((*apex)->next)) {
     return;
   }
 
-  StackNode* sortedStack = nullptr;
+  StackNode* sorted_stack = nullptr;
 
   while (*apex) {
     StackNode* current = *apex;
     *apex = (*apex)->next;
 
-    if (!sortedStack || current->priority <= sortedStack->priority) {
+    if (!sorted_stack || current->priority <= sorted_stack->priority) {
       /* Входящий меньше, чем лежащий */
-      current->next = sortedStack;
-      sortedStack = current;
+      current->next = sorted_stack;
+      sorted_stack = current;
     } else {
       /* Входящий больше, чем лежащий */
-      StackNode* temp = sortedStack;
+      StackNode* temp = sorted_stack;
 
       while (temp->next && current->priority > temp->next->priority) {
         temp = temp->next;
@@ -57,7 +57,7 @@ void CalcModel::sortStackByPriority(StackNode** apex) {
     }
   }
 
-  *apex = sortedStack;
+  *apex = sorted_stack;
   return;
 }
 }  // namespace s21

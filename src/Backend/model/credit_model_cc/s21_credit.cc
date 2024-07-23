@@ -1,13 +1,13 @@
-#include "../s21_credit_model.hpp"
+#include "../s21_credit_model.h"
 
 namespace s21 {
-int CreditModel::credit(const char* sumStr, const char* periodStr,
-                        const char* percentStr, int type, creditRes* res) {
+int CreditModel::Credit(const char* sumStr, const char* period_str,
+                        const char* percent_str, int type, creditRes* res) {
   int answer = CORRECT;
   creditParam param = {};
 
-  if (!readX(sumStr, &param.sum) || !readX(periodStr, &param.period) ||
-      !readX(percentStr, &param.percent)) {
+  if (!ReadX(sumStr, &param.sum) || !ReadX(period_str, &param.period) ||
+      !ReadX(percent_str, &param.percent)) {
     answer = ERROR;
   }
 
@@ -19,7 +19,7 @@ int CreditModel::credit(const char* sumStr, const char* periodStr,
 
   if (answer == CORRECT) {
     try {
-      calcCredit(param, res, type);
+      CalcCredit(param, res, type);
     } catch (const CalculatorException& e) {
       throw;
     }
@@ -27,7 +27,7 @@ int CreditModel::credit(const char* sumStr, const char* periodStr,
   return (answer);
 }
 
-void CreditModel::calcCredit(creditParam param, creditRes* res, int type) {
+void CreditModel::CalcCredit(creditParam param, creditRes* res, int type) {
   double p = param.percent / (100 * 12);
   if (type == ANNUITY) {
     res->monthly = param.sum * (p + p / (pow(1 + p, param.period) - 1));

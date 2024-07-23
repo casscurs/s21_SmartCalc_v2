@@ -5,7 +5,7 @@
 #include "qcustomplot.h"
 #include <vector>
 #include <QVector>
-#include "../../Backend/controller/s21_calc_controller.hpp"
+#include "../../Backend/controller/s21_calc_controller.h"
 
 namespace Ui {
 class SecondWindow;

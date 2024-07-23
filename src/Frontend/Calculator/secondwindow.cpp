@@ -26,47 +26,47 @@ SecondWindow::~SecondWindow() { delete ui; }
 void SecondWindow::on_pushButton_plot_clicked() {
   s21::CalcController calcController(&calcModel);
 
-  QString inputFunc = ui->lineEdit_formula->text();
-  QString inputXmin = ui->lineEdit_Xmin->text();
-  QString inputXmax = ui->lineEdit_Xmax->text();
-  QString inputYrange = ui->lineEdit_Yrange->text();
-  QString inputXrange = ui->lineEdit_Xrange->text();
+  QString input_func = ui->lineEdit_formula->text();
+  QString input_xmin = ui->lineEdit_Xmin->text();
+  QString input_xmax = ui->lineEdit_Xmax->text();
+  QString input_yrange = ui->lineEdit_Yrange->text();
+  QString input_xrange = ui->lineEdit_Xrange->text();
 
-  QByteArray byteArrayFunc = inputFunc.toLocal8Bit();
-  QByteArray byteArrayXmin = inputXmin.toLocal8Bit();
-  QByteArray byteArrayXmax = inputXmax.toLocal8Bit();
-  QByteArray byteArrayYrange = inputYrange.toLocal8Bit();
-  QByteArray byteArrayXrange = inputXrange.toLocal8Bit();
+  QByteArray byte_array_func = input_func.toLocal8Bit();
+  QByteArray byte_array_xmin = input_xmin.toLocal8Bit();
+  QByteArray byte_array_xmax = input_xmax.toLocal8Bit();
+  QByteArray byte_array_yrange = input_yrange.toLocal8Bit();
+  QByteArray byte_array_xrange = input_xrange.toLocal8Bit();
 
-  char* charArrayFunc = byteArrayFunc.data();
-  char* charArrayXmin = byteArrayXmin.data();
-  char* charArrayXmax = byteArrayXmax.data();
-  char* charArrayYrange = byteArrayYrange.data();
-  char* charArrayXrange = byteArrayXrange.data();
+  char* char_array_func = byte_array_func.data();
+  char* char_array_xmin = byte_array_xmin.data();
+  char* char_array_xmax = byte_array_xmax.data();
+  char* char_array_yrange = byte_array_yrange.data();
+  char* char_array_xrange = byte_array_xrange.data();
 
-  charArrayFunc[byteArrayFunc.size()] = '\0';
-  charArrayXmin[byteArrayXmin.size()] = '\0';
-  charArrayXmax[byteArrayXmax.size()] = '\0';
-  charArrayYrange[byteArrayYrange.size()] = '\0';
-  charArrayXrange[byteArrayXrange.size()] = '\0';
+  char_array_func[byte_array_func.size()] = '\0';
+  char_array_xmin[byte_array_xmin.size()] = '\0';
+  char_array_xmax[byte_array_xmax.size()] = '\0';
+  char_array_yrange[byte_array_yrange.size()] = '\0';
+  char_array_xrange[byte_array_xrange.size()] = '\0';
 
   double res = 0;
-  double Xmin = 0, Xmax = 0, Yrange = 0, Xrange = 0;
+  double x_min = 0, x_max = 0, y_range = 0, x_range = 0;
   int answer = 1;
 
-  if (!calcController.readX(charArrayXmin, &Xmin)) answer = 0;
-  if (!calcController.readX(charArrayXmax, &Xmax)) answer = 0;
-  if (!calcController.readX(charArrayXrange, &Xrange)) answer = 0;
-  if (!calcController.readX(charArrayYrange, &Yrange)) answer = 0;
+  if (!calcController.XReader(char_array_xmin, &x_min)) answer = 0;
+  if (!calcController.XReader(char_array_xmax, &x_max)) answer = 0;
+  if (!calcController.XReader(char_array_xrange, &x_range)) answer = 0;
+  if (!calcController.XReader(char_array_yrange, &y_range)) answer = 0;
 
-  if (answer && Xmax > Xmin) {
+  if (answer && x_max > x_min) {
     step = 0.1;
-    xBegin = Xmin;
-    xEnd = Xmax;
-    ui->widget->xAxis->setRange(-1 * Xrange, Xrange);
-    ui->widget->yAxis->setRange(-1 * Yrange, Yrange);
+    xBegin = x_min;
+    xEnd = x_max;
+    ui->widget->xAxis->setRange(-1 * x_range, x_range);
+    ui->widget->yAxis->setRange(-1 * y_range, y_range);
 
-    calcController.graphCalc(xBegin, xEnd, x, y, charArrayFunc);
+    calcController.GraphCalc(xBegin, xEnd, x, y, char_array_func);
 
     QVector<double> Qx(x.begin(), x.end());
     QVector<double> Qy(y.begin(), y.end());

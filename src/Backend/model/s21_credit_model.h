@@ -1,18 +1,18 @@
-#ifndef S21_CREDIT_MODEL_HPP
-#define S21_CREDIT_MODEL_HPP
+#ifndef S21_CREDIT_MODEL_H
+#define S21_CREDIT_MODEL_H
 
-#include "s21_calc_model.hpp"
+#include "s21_calc_model.h"
 
 namespace s21 {
 /**
  * @brief Класс определяющий модель кредитного калькулятора
  */
-class CreditModel : private CalcModel {
+class CreditModel : public CalcModel {
  public:
   /**
    * @brief Структура хранящая значения конечный параметров
    */
-  typedef struct creditRes {
+  typedef struct CreditRes {
     double monthly = 0;
     double overpay = 0;
     double total = 0;
@@ -22,7 +22,7 @@ class CreditModel : private CalcModel {
   /**
    * @brief Перечисление для кодификации типа кредита
    */
-  typedef enum credit_type {
+  typedef enum Credit_type {
     DIFFERENTIATED = 0,
     ANNUITY = 1,
   } credit_type;
@@ -30,20 +30,20 @@ class CreditModel : private CalcModel {
   /**
    * @brief Основной метод кредитного калькулятора
    * @param sumStr строка содержащая сумму кредита
-   * @param periodStr строка содержащая срок кредита
-   * @param percentStr строка содержащая процентную ставку кредита
+   * @param period_str строка содержащая срок кредита
+   * @param percent_str строка содержащая процентную ставку кредита
    * @param type переменная хранящая кодификатор типа кредита
    * @param res результирующая структура
    * @return код ошибки 0 - error, 1 - correct
    */
-  int credit(const char* sumStr, const char* periodStr, const char* percentStr,
-             int type, creditRes* res);
+  int Credit(const char* sumStr, const char* period_str,
+             const char* percent_str, int type, creditRes* res);
 
   /**
    * @brief Метод необходимый для очистики массива после вывода информации
    * @param myStruct адрес структуры для вывода данных
    */
-  void freeValArr(creditRes* myStruct) {
+  void FreeValArr(creditRes* myStruct) {
     if ((myStruct)->valArr != nullptr) free((myStruct)->valArr);
   }
 
@@ -51,7 +51,7 @@ class CreditModel : private CalcModel {
   /**
    * @brief Структура хранящая значения начальных параметров
    */
-  typedef struct creditParam {
+  typedef struct CreditParam {
     double sum = 0;
     double period = 0;
     double percent = 0;
@@ -62,7 +62,7 @@ class CreditModel : private CalcModel {
    * @param res указатель на результирующую строку
    * @param type переменная хранящая кодификатор типа кредита
    */
-  void calcCredit(creditParam param, creditRes* res, int type);
+  void CalcCredit(creditParam param, creditRes* res, int type);
 };
 
 }  // namespace s21

@@ -1,27 +1,27 @@
-#ifndef S21_CALC_CONTROLLER_HPP
-#define S21_CALC_CONTROLLER_HPP
+#ifndef S21_CALC_CONTROLLER_H
+#define S21_CALC_CONTROLLER_H
 
 #include <vector>
 
-#include "../model/s21_calc_model.hpp"
+#include "../model/s21_calc_model.h"
 
 namespace s21 {
 /**
  * @brief Класс определяющий контроллер калькулятора
  */
-class CalcController : private CalcModel {
+class CalcController {
  private:
-  CalcModel* calcModel = nullptr;
+  CalcModel* calc_model = nullptr;
   double res = 0;
 
  public:
   CalcController() = delete;
-  using CalcModel::readX;
   /**
    * @brief Конструктор контроллера от модели
    * @param model адрес модели
    */
-  explicit CalcController(CalcModel* model) : calcModel(model) {}
+
+  CalcController(CalcModel* model) : calc_model(model) {}
 
   /**
    * @brief Метод производящий вычисления
@@ -29,30 +29,38 @@ class CalcController : private CalcModel {
    * @param x введенное значение x
    * @return код ошибки 0 - error, 1 - correct
    */
-  int calc(const char* initial, const char* x);
+  int Calc(const char* initial, const char* x);
 
   /**
    * @brief Геттер
    * @return данные
    */
-  double getCalcData();
+  double GetCalcData();
   /**
    * @brief Метод для построения графика
-   * @param xBegin начало разбиения по x
-   * @param xEnd конец разбиения по x
+   * @param x_begin начало разбиения по x
+   * @param x_end конец разбиения по x
    * @param x вектор координат по x
    * @param y вектор координат по y
    * @param str функция y(x)
    * @return код ошибки 0 - error, 1 - correct
    */
-  int graphCalc(int xBegin, int xEnd, std::vector<double>& x,
+  int GraphCalc(int x_begin, int x_end, std::vector<double>& x,
                 std::vector<double>& y, const char* str);
 
   /**
    * @brief Метод обнуляющий значение результата в классе
    */
-  void resetCalcData();
+  void ResetCalcData();
+
+  /**
+   * @brief Метод для считывания и проверки поступившего X
+   * @param initial строка введенная в поле X
+   * @param value переменная для числа
+   * @return код ошибки 0 - error, 1 - correct
+   */
+  int XReader(const char* initial, double* value);
 };
 }  // namespace s21
 
-#endif  // S21_CALC_CONTROLLER_HPP
+#endif  // S21_CALC_CONTROLLER_H

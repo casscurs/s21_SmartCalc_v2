@@ -10,19 +10,19 @@ COLOR_RESET = \033[0m
 # Исходники
 NAME = calc.a
 
-SRC_FILES = $(wildcard ./Backend/model/calc_model_cpp/*.cpp) $(wildcard ./Backend/model/deposit_model_cpp/*.cpp) $(wildcard ./Backend/model/credit_model_cpp/*.cpp) $(wildcard ./Backend/controller/*.cpp)
+SRC_FILES = $(wildcard ./Backend/model/calc_model_cc/*.cc) $(wildcard ./Backend/model/deposit_model_cc/*.cc) $(wildcard ./Backend/model/credit_model_cc/*.cc) $(wildcard ./Backend/controller/*.cc)
 
-HEADER_FILES = $(wildcard ./Backend/model/*.hpp) $(wildcard ./Backend/controller/*.hpp)
+HEADER_FILES = $(wildcard ./Backend/model/*.h) $(wildcard ./Backend/controller/*.h)
 
-OBJ_FILES = $(patsubst %.cpp, %.o, $(SRC_FILES))
-DEP_FILES = $(patsubst %.cpp, %.d, $(SRC_FILES))
+OBJ_FILES = $(patsubst %.cc, %.o, $(SRC_FILES))
+DEP_FILES = $(patsubst %.cc, %.d, $(SRC_FILES))
 
-FRONT_FILES = $(wildcard ./Frontend/Calculator/*.cpp)
+FRONT_FILES = $(wildcard ./Frontend/Calculator/*.cc)
 FRONT_HEADERS = $(wildcard ./Frontend/*.h)
 # Тесты
 TESTS_DIR = Backend/model/tests/
-TESTS_SRC = $(wildcard $(TESTS_DIR)*.cpp)
-TESTS_OBJ = $(patsubst %.cpp,%.o,$(TESTS_SRC))
+TESTS_SRC = $(wildcard $(TESTS_DIR)*.cc)
+TESTS_OBJ = $(patsubst %.cc,%.o,$(TESTS_SRC))
 # Флаги
 CXX = g++ -std=c++17
 CXXFLAGS = -Wall -Wextra -Werror -O2
@@ -94,14 +94,14 @@ clean : uninstall undvi distclean
 	@echo "$(COLOR_TITLE)=== Cleaning ===$(COLOR_RESET)"
 	@rm -rf *.a *.o gcovr *.gcda *.gcno $(DEP_FILES) $(NAME) test
 	@rm -rf Backend/model/tests/*.d Backend/model/tests/*.o Backend/model/tests/*.gcda Backend/model/tests/*.gcno
-	@rm -rf Backend/model/calc_model_cpp/*.o Backend/model/calc_model_cpp/*.gcda Backend/model/calc_model_cpp/*.gcno
-	@rm -rf Backend/model/deposit_model_cpp/*.o Backend/model/deposit_model_cpp/*.gcda Backend/model/deposit_model_cpp/*.gcno
-	@rm -rf Backend/model/credit_model_cpp/*.o Backend/model/credit_model_cpp/*.gcda Backend/model/credit_model_cpp/*.gcno
+	@rm -rf Backend/model/calc_model_cc/*.o Backend/model/calc_model_cc/*.gcda Backend/model/calc_model_cc/*.gcno
+	@rm -rf Backend/model/deposit_model_cc/*.o Backend/model/deposit_model_cc/*.gcda Backend/model/deposit_model_cc/*.gcno
+	@rm -rf Backend/model/credit_model_cc/*.o Backend/model/credit_model_cc/*.gcda Backend/model/credit_model_cc/*.gcno
 	@rm -rf Backend/controller/*.o Backend/controller/*.gcda Backend/controller/*.gcno
 
-cppcheck :
-	@echo "$(COLOR_TITLE)=== Running cppcheck ===$(COLOR_RESET)"
-	cppcheck --enable=all --suppress=missingIncludeSystem $(SRC_FILES) $(HEADER_FILES) $(TESTS_SRC)
+cccheck :
+	@echo "$(COLOR_TITLE)=== Running cccheck ===$(COLOR_RESET)"
+	cccheck --enable=all --suppress=missingIncludeSystem $(SRC_FILES) $(HEADER_FILES) $(TESTS_SRC)
 
 format :
 	@echo "$(COLOR_TITLE)=== Formatting code ===$(COLOR_RESET)"
@@ -112,4 +112,4 @@ check-format :
 	@echo "$(COLOR_TITLE)=== Checking code formatting ===$(COLOR_RESET)"
 	clang-format -n -style=Google $(SRC_FILES) $(HEADER_FILES) $(FRONT_FILES) $(FRONT_HEADERS) $(TESTS_SRC)
 
-.PHONY : all clean cppcheck cpplint format check-format dvi undvi dist distclean
+.PHONY : all clean cccheck cclint format check-format dvi undvi dist distclean

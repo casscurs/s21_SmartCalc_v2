@@ -1,5 +1,5 @@
-#ifndef S21_CALC_MODEL_HPP
-#define S21_CALC_MODEL_HPP
+#ifndef S21_CALC_MODEL_H
+#define S21_CALC_MODEL_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +8,7 @@
 #include <cmath>
 #include <iostream>
 
-#include "s21_exception.hpp"
+#include "s21_exception.h"
 
 namespace s21 {
 
@@ -16,6 +16,8 @@ namespace s21 {
  * @brief Класс определяющий модель калькулятора
  */
 class CalcModel {
+  friend class CalcController;
+
  public:
   /**
    * @brief Основной метод вызывающий все блоки
@@ -23,7 +25,7 @@ class CalcModel {
    * @param res результат вычислений
    * @return код ошибки 0 - error, 1 - correct
    */
-  int calc(const char* initial, const char* x, double* res);
+  int Calc(const char* initial, const char* x, double* res);
 
   /**
    * @brief Метод для считывания и проверки поступившего X
@@ -31,9 +33,10 @@ class CalcModel {
    * @param value переменная для числа
    * @return код ошибки 0 - error, 1 - correct
    */
-  int readX(const char* initial, double* value);
+  int ReadX(const char* initial, double* value);
 
- protected:
+  /* Функции для работы со stack */
+
   /**
    * @brief Структура включающая все необхомые переменные для работы со стэком
    */
@@ -45,9 +48,33 @@ class CalcModel {
   } StackNode;
 
   /**
+   * @brief Метод осуществляющий добавление элемента в стэк
+   * @param apex указатель на вершину
+   * @return указатель указатель на новую вершину
+   */
+  StackNode* PushStackNode(StackNode* apex);
+  /**
+   * @brief Метод осуществляющий удаление элемента с вершины стэка
+   * @param apex указатель на вершину
+   * @return указатель указатель на новую вершину
+   */
+  StackNode* PopStackNode(StackNode* apex);
+  /**
+   * @brief Полное удаление стэка
+   * @param apex указатель на вершину
+   */
+  void FreeStack(StackNode* apex);
+  /**
+   * @brief Метод осуществляющий сортировку стэка по полю priority
+   * @param apex адрес указателя на вершину
+   */
+  void SortStackByPriority(StackNode** apex);
+
+ protected:
+  /**
    * @brief Перечисление для кодификации операций
    */
-  typedef enum what {
+  typedef enum What {
     INITIA = 0,
     NUMBER = 1,
     X = 2,
@@ -74,7 +101,7 @@ class CalcModel {
   /**
    * @brief Перечисление для выставления приоретата математаческим операциям
    */
-  typedef enum priority {
+  typedef enum Priority {
     NUMB = 0,
     ASUB = 1,
     MDM = 2,
@@ -85,36 +112,11 @@ class CalcModel {
   /**
    * @brief Перечисление для корректной обработки возвратов из функций
    */
-  typedef enum codes {
+  typedef enum Codes {
     XCOMING = -1,
     ERROR = 0,
     CORRECT = 1,
   } codes;
-
-  /* Функции для работы со stack */
-
-  /**
-   * @brief Метод осуществляющий добавление элемента в стэк
-   * @param apex указатель на вершину
-   * @return указатель указатель на новую вершину
-   */
-  StackNode* pushStackNode(StackNode* apex);
-  /**
-   * @brief Метод осуществляющий удаление элемента с вершины стэка
-   * @param apex указатель на вершину
-   * @return указатель указатель на новую вершину
-   */
-  StackNode* popStackNode(StackNode* apex);
-  /**
-   * @brief Полное удаление стэка
-   * @param apex указатель на вершину
-   */
-  void freeStack(StackNode* apex);
-  /**
-   * @brief Метод осуществляющий сортировку стэка по полю priority
-   * @param apex адрес указателя на вершину
-   */
-  void sortStackByPriority(StackNode** apex);
 
   /* Функции валидатора */
 
@@ -125,14 +127,14 @@ class CalcModel {
    * @param res указатель на отформатированную строку
    * @return код ошибки 0 - error, 1 - correct
    */
-  int checker(const char* str, char* res);
+  int Checker(const char* str, char* res);
 
   /**
    * @brief Метод осуществляющий синтаксическую проверку строки
    * @param str указатель на строку
    * @return код ошибки 0 - error, 1 - correct
    */
-  int checkSymbol(char* str);
+  int CheckSymbol(char* str);
 
   /**
    * @brief Метод форматирующий строку, выполняет предварительную проверку
@@ -141,7 +143,7 @@ class CalcModel {
    * @param res указатель на результирующую строку
    * @return код ошибки 0 - error, 1 - correct
    */
-  int spacesBrackets(const char* str, char* res);
+  int SpacesBrackets(const char* str, char* res);
 
   /**
    * @brief Метод проверяющий правильность написания имен функций
@@ -151,7 +153,7 @@ class CalcModel {
    * @param point параметр отвечающий за валидацию точек в строке
    * @return код ошибки 0 - error, 1 - correct
    */
-  int checkLetters(char* str, int* i, int* flaf, int* point);
+  int CheckLetters(char* str, int* i, int* flaf, int* point);
 
   /**
    * @brief Метод проверяющий правильность операций и операндов
@@ -161,7 +163,7 @@ class CalcModel {
    * @param point параметр отвечающий за валидацию точек в строке
    * @return код ошибки 0 - error, 1 - correct
    */
-  int checkSigns(const char* str, const int* i, int* point, int* flaf);
+  int CheckSigns(const char* str, const int* i, int* point, int* flaf);
 
   /**
    * @brief Метод необходимый для подсчета скобок
@@ -169,7 +171,7 @@ class CalcModel {
    * @param bracket указатель на переменную, валидирующую количество открывающих
    * и закрывающих скобок
    */
-  void bracketCounter(char c, int* bracket);
+  void BracketCounter(char c, int* bracket);
 
   /**
    * @brief Метод проверяющий операцию MOD
@@ -179,7 +181,7 @@ class CalcModel {
    * @param point параметр отвечающий за валидацию точек в строке
    * @return код ошибки 0 - error, 1 - correct
    */
-  int checkMod(char* str, int* i, int* flaf, int* point);
+  int CheckMod(char* str, int* i, int* flaf, int* point);
 
   /**
    * @brief Метод проверяющий строку параметра x
@@ -187,14 +189,14 @@ class CalcModel {
    * @param res указатель на результирующую строку
    * @return код ошибки 0 - error, 1 - correct
    */
-  int check_x(const char* str, char* res);
+  int CheckX(const char* str, char* res);
 
   /**
    * @brief Метод проверяющий синтаксис в строке x
    * @param str указатель на исходную строку
    * @return код ошибки 0 - error, 1 - correct
    */
-  int checkSymbol_x(const char* str);
+  int CheckSymbolX(const char* str);
 
   /* Функции для создания массива лексем */
 
@@ -207,7 +209,7 @@ class CalcModel {
    * @param i итератор по исходной строке
    * @param unar переменная-флаг для унарных операций
    */
-  void numbToLexeme(StackNode* lexeme, int* m, char* buf, int* k, int* i,
+  void NumbToLexeme(StackNode* lexeme, int* m, char* buf, int* k, int* i,
                     int* unar);
 
   /**
@@ -219,7 +221,7 @@ class CalcModel {
    * @param what значение для поля what
    * @param priority значение для поля priority
    */
-  void fillFunc(StackNode* lexeme, int* pos, int* step, int stepVal, int what,
+  void FillFunc(StackNode* lexeme, int* pos, int* step, int step_val, int what,
                 int priority);
 
   /**
@@ -229,7 +231,7 @@ class CalcModel {
    * @param priority значение для поля priority
    * @param value значение для поля value
    */
-  void fillFields(StackNode* number, int what, int priority, double value);
+  void FillFields(StackNode* number, int what, int priority, double value);
 
   /**
    * @brief Метод заполняющий поля лексем для символов
@@ -241,7 +243,7 @@ class CalcModel {
    * @param unar переменная-флаг для унарных операций
    * @param checker переменная-флаг для X
    */
-  void signToLexeme(StackNode* lexeme, char* str, int* m, int* i, int* unar,
+  void SignToLexeme(StackNode* lexeme, char* str, int* m, int* i, int* unar,
                     int* checker);
 
   /**
@@ -261,7 +263,7 @@ class CalcModel {
    * @param x значение X
    * @return результат вычислений
    */
-  double calculating(StackNode* lexeme, double x);
+  double Calculating(StackNode* lexeme, double x);
 
   /**
    * @brief Метод заполняющий массив лексем
@@ -269,7 +271,7 @@ class CalcModel {
    * @param lexeme структура хранящая поля
    * @return код ошибки 0 - error, 1 - correct
    */
-  int getLexemsArr(const char* str, StackNode* lexeme);
+  int GetLexemsArr(const char* str, StackNode* lexeme);
 
   /**
    * @brief Метод разделяющий лексемы на 2 стека
@@ -278,7 +280,7 @@ class CalcModel {
    * @param lexeme массив лексем
    * @param x значение X
    */
-  void dijkstraLogic(StackNode** numbers, StackNode** signs, StackNode* lexeme,
+  void DijkstraLogic(StackNode** numbers, StackNode** signs, StackNode* lexeme,
                      double x);
 
   /**
@@ -287,7 +289,7 @@ class CalcModel {
    * @param signs стэк с операциями
    * @param oper код операции
    */
-  void operation(StackNode** number, StackNode** signs, int oper);
+  void Operation(StackNode** number, StackNode** signs, int oper);
 
   /**
    * @brief Метод извлекающий числа из стека для выполнения операции
@@ -295,14 +297,14 @@ class CalcModel {
    * @param a первое число
    * @param b второе число
    */
-  void twoElements(StackNode** number, double* a, double* b);
+  void TwoElements(StackNode** number, double* a, double* b);
 
   /**
    * @brief Метод извлекающий число из стека для выполнения операции
    * @param numbers стэк с числами
    * @param a число
    */
-  void oneElement(StackNode** number, double* a);
+  void OneElement(StackNode** number, double* a);
 
   /**
    * @brief Метод возвращающий индентификатор в зависимости от приоритета
@@ -311,7 +313,7 @@ class CalcModel {
    * @param priority приоритет входящей операции
    * @note -1 - приоритет входящей выше, чем в лежащей, >=0 - ниже или равен
    */
-  int checkPriority(StackNode* signs, int priority);
+  int CheckPriority(StackNode* signs, int priority);
 };
 }  // namespace s21
 

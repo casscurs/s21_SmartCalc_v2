@@ -1,28 +1,29 @@
-#ifndef S21_CREDIT_CONTROLLER_HPP
-#define S21_CREDIT_CONTROLLER_HPP
+#ifndef S21_CREDIT_CONTROLLER_H
+#define S21_CREDIT_CONTROLLER_H
 
-#include "../model/s21_credit_model.hpp"
+#include "../model/s21_credit_model.h"
+#include "s21_calc_controller.h"
 
 namespace s21 {
 /**
  * @brief Класс определяющий контроллер кредитного калькулятора
  */
-class CreditController : CreditModel {
+class CreditController : public CalcController {
  private:
-  CreditModel* creditModel = nullptr;
+  CreditModel* credit_model = nullptr;
   CreditModel::creditRes res = {};
 
  public:
-  using CreditModel::ANNUITY;
-  using CreditModel::creditRes;
-  using CreditModel::DIFFERENTIATED;
+  const int kannuity = CreditModel::ANNUITY;
+  const int kdiff = CreditModel::DIFFERENTIATED;
 
   CreditController() = delete;
   /**
    * @brief Конструктор контроллера от модели
    * @param model адрес модели
    */
-  explicit CreditController(CreditModel* model) : creditModel(model){};
+  explicit CreditController(CreditModel* model)
+      : CalcController(model), credit_model(model){};
 
   /**
    * @brief Деструктор объекта класса кредитного контроллера
@@ -31,31 +32,31 @@ class CreditController : CreditModel {
 
   /**
    * @brief Метод контроллера производящий вычисления
-   * @param sumStr строка содержащая сумму кредита
-   * @param periodStr строка содержащая срок кредита
-   * @param percentStr строка содержащая процентную ставку кредита
+   * @param sum_str строка содержащая сумму кредита
+   * @param period_str строка содержащая срок кредита
+   * @param percent_str строка содержащая процентную ставку кредита
    * @param type переменная хранящая кодификатор типа кредита
    * @return код ошибки 0 - error, 1 - correct
    */
-  int credit(const char* sumStr, const char* periodStr, const char* percentStr,
-             int type);
+  int Credit(const char* sum_str, const char* period_str,
+             const char* percent_str, int type);
 
   /**
    * @brief Геттер
    * @return данные
    */
-  s21::CreditModel::creditRes getCreditData();
+  s21::CreditModel::creditRes GetCreditData();
 
   /**
    * @brief Метод обнуляющий значение результата в классе
    */
-  void resetCreditData();
+  void ResetCreditData();
 
   /**
    * @brief Метод очищающий массив для вывода данных
    */
-  void freeCreditArr();
+  void FreeCreditArr();
 };
 }  // namespace s21
 
-#endif  // S21_CREDIT_CONTROLLER_HPP
+#endif  // S21_CREDIT_CONTROLLER_H

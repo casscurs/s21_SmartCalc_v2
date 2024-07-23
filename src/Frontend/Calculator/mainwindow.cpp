@@ -8,7 +8,9 @@ MainWindow::MainWindow(QWidget* parent)
       ui(new Ui::MainWindow),
       creditSum_doubleValidator(0, 1000000000000000, 2, this),
       creditPeriod_doubleValidator(1, 600, 2, this),
-      creditPercent_doubleValidator(0, 999, 2, this) {
+      creditPercent_doubleValidator(0, 999, 2, this),
+      depositController(&depositModel)
+{
   ui->setupUi(this);
   /* Блок валидатора */
 
@@ -142,11 +144,11 @@ void MainWindow::functions() {
 void MainWindow::on_pushButton_res_clicked() {
   s21::CalcController calcController(&calcModel);
 
-  QString inputText = ui->lineEdit_input->text();
-  QString inputX = ui->lineEdit_X->text();
+  QString input_text = ui->lineEdit_input->text();
+  QString input_x = ui->lineEdit_X->text();
 
-  QByteArray byteArray = inputText.toLocal8Bit();
-  QByteArray byteArrayX = inputX.toLocal8Bit();
+  QByteArray byteArray = input_text.toLocal8Bit();
+  QByteArray byteArrayX = input_x.toLocal8Bit();
 
   char* charArray = byteArray.data();
   char* charArrayX = byteArrayX.data();
@@ -154,8 +156,8 @@ void MainWindow::on_pushButton_res_clicked() {
   charArray[byteArray.size()] = '\0';
   charArrayX[byteArrayX.size()] = '\0';
 
-  if (calcController.calc(charArray, charArrayX)) {
-    ui->lineEdit_input->setText(QString::number(calcController.getCalcData()));
+  if (calcController.Calc(charArray, charArrayX)) {
+    ui->lineEdit_input->setText(QString::number(calcController.GetCalcData()));
   } else {
     ui->lineEdit_input->setText("Invalid input");
   }
@@ -188,19 +190,21 @@ void MainWindow::on_pushButton_calc_clicked() {
 
   if (ui->radioButton_anny->isChecked()) {
     s21::CreditController creditController(&creditModel);
-    int type = creditController.ANNUITY;
-    if (creditController.credit(charArraySum, charArrayPeriod, charArrayPercent,
+
+    int type = creditController.kannuity;
+
+    if (creditController.Credit(charArraySum, charArrayPeriod, charArrayPercent,
                                 type)) {
       ui->plainTextEdit_output->clear();
       ui->plainTextEdit_output->appendPlainText(
           "Ежемесячный платеж: " +
-          QString::number(creditController.getCreditData().monthly, 'f', 2));
+          QString::number(creditController.GetCreditData().monthly, 'f', 2));
       ui->plainTextEdit_output->appendPlainText(
           "Переплата: " +
-          QString::number(creditController.getCreditData().overpay, 'f', 2));
+          QString::number(creditController.GetCreditData().overpay, 'f', 2));
       ui->plainTextEdit_output->appendPlainText(
           "Общая сумма: " +
-          QString::number(creditController.getCreditData().total, 'f', 2));
+          QString::number(creditController.GetCreditData().total, 'f', 2));
     } else
       ui->plainTextEdit_output->setPlainText("Invalid input");
   }
@@ -209,144 +213,117 @@ void MainWindow::on_pushButton_calc_clicked() {
     s21::CreditController creditController(&creditModel);
     s21::CalcController calcController(&calcModel);
 
-    int type = creditController.DIFFERENTIATED;
+    int type = creditController.kdiff;
     double period = 0;
-
-    if (calcController.readX(charArrayPeriod, &period) &&
-        creditController.credit(charArraySum, charArrayPeriod, charArrayPercent,
+    if (creditController.XReader(charArrayPeriod, &period) &&
+        creditController.Credit(charArraySum, charArrayPeriod, charArrayPercent,
                                 type)) {
       ui->plainTextEdit_output->clear();
       for (int i = 0; i < (int)period; ++i) {
         ui->plainTextEdit_output->appendPlainText(
             "Месяц " + QString::number(i + 1) + ": " +
-            QString::number(creditController.getCreditData().valArr[i], 'f',
+            QString::number(creditController.GetCreditData().valArr[i], 'f',
                             2));
       }
       ui->plainTextEdit_output->appendPlainText(
           "Переплата: " +
-          QString::number(creditController.getCreditData().overpay, 'f', 2));
+          QString::number(creditController.GetCreditData().overpay, 'f', 2));
       ui->plainTextEdit_output->appendPlainText(
           "Общая сумма: " +
-          QString::number(creditController.getCreditData().total, 'f', 2));
+          QString::number(creditController.GetCreditData().total, 'f', 2));
     } else
       ui->plainTextEdit_output->setPlainText("Invalid input");
   }
 }
 
 void MainWindow::on_pushButton_depCalc_clicked() {
-  s21::DepositController depositController(&depositModel);
 
-  s21::DepositModel::output depOut = {};
-  s21::DepositModel::inputStr str = {};
+  QString input_sum = ui->lineEdit_depSum->text();
+  QString input_period = ui->lineEdit_depPeriod->text();
+  QString input_percent = ui->lineEdit_depPercent->text();
 
-  QString inputSum = ui->lineEdit_depSum->text();
-  QString inputPeriod = ui->lineEdit_depPeriod->text();
-  QString inputPercent = ui->lineEdit_depPercent->text();
+  QByteArray byte_array_sum = input_sum.toLocal8Bit();
+  QByteArray byte_array_period = input_period.toLocal8Bit();
+  QByteArray byte_array_percent = input_percent.toLocal8Bit();
 
-  QByteArray byteArraySum = inputSum.toLocal8Bit();
-  QByteArray byteArrayPeriod = inputPeriod.toLocal8Bit();
-  QByteArray byteArrayPercent = inputPercent.toLocal8Bit();
+  char* char_array_sum = byte_array_sum.data();
+  char* char_array_period = byte_array_period.data();
+  char* char_array_percent = byte_array_percent.data();
 
-  char* charArraySum = byteArraySum.data();
-  char* charArrayPeriod = byteArrayPeriod.data();
-  char* charArrayPercent = byteArrayPercent.data();
+  char_array_sum[byte_array_sum.size()] = '\0';
+  char_array_period[byte_array_period.size()] = '\0';
+  char_array_percent[byte_array_percent.size()] = '\0';
 
-  charArraySum[byteArraySum.size()] = '\0';
-  charArrayPeriod[byteArrayPeriod.size()] = '\0';
-  charArrayPercent[byteArrayPercent.size()] = '\0';
+  if (ui->checkBox_cap->isChecked()) depositController.str.capital = 1;
+  if (ui->radioButton_yearly->isChecked()) depositController.str.regularity = depositModel.YEARLY;
+  depositController.str.deposit_sum_str = char_array_sum;
+  depositController.str.percent_str = char_array_percent;
+  depositController.str.period_str = char_array_period;
 
-  if (ui->checkBox_cap->isChecked()) str.capital = 1;
-  if (ui->radioButton_yearly->isChecked()) str.regularity = depositModel.YEARLY;
-  str.depositSumStr = charArraySum;
-  str.percentStr = charArrayPercent;
-  str.periodStr = charArrayPeriod;
-
-  depositController.sortStackByPriority(&add);
-  depositController.sortStackByPriority(&with);
-
-  depositController.operationsInMonth(&add);
-  depositController.operationsInMonth(&with);
-
-  if (depositController.deposit(str, &add, &with)) {
+  if (depositController.Deposit()) {
     ui->plainTextEdit_dep->clear();
     ui->plainTextEdit_dep->appendPlainText(
         "Начисленные проценты: " +
-        QString::number(depositController.getDepositData().percentAward, 'f',
+        QString::number(depositController.GetDepositData().percent_award, 'f',
                         2));
     ui->plainTextEdit_dep->appendPlainText(
         "Сумма налога: " +
-        QString::number(depositController.getDepositData().taxAmount, 'f', 2));
+        QString::number(depositController.GetDepositData().tax_amount, 'f', 2));
     ui->plainTextEdit_dep->appendPlainText(
         "Сумма на вкладе к концу срока: " +
-        QString::number(depositController.getDepositData().totalAward, 'f', 2));
+        QString::number(depositController.GetDepositData().total_award, 'f', 2));
   } else
     ui->plainTextEdit_dep->setPlainText("Invalid input");
-  popAndClearStackAdd();
-  popAndClearStackWith();
+  depositController.PopAndClearStack();
+  depositController.ResetDepositData();
 }
 
 void MainWindow::pushToStackAdd() {
-  s21::CalcController calcController(&calcModel);
-  s21::DepositController depositController(&depositModel);
 
-  QString inputAddSum = ui->lineEdit_AddSum->text();
-  QByteArray byteArrayAddSum = inputAddSum.toLocal8Bit();
-  char* charArrayAddSum = byteArrayAddSum.data();
-  charArrayAddSum[byteArrayAddSum.size()] = '\0';
+  QString input_add_sum = ui->lineEdit_AddSum->text();
+  QByteArray byte_array_add_sum = input_add_sum.toLocal8Bit();
+  char* char_array_add_sum = byte_array_add_sum.data();
+  char_array_add_sum[byte_array_add_sum.size()] = '\0';
 
-  QString inputAddMonth = ui->lineEdit_AddMonth->text();
-  QByteArray byteArrayAddMonth = inputAddMonth.toLocal8Bit();
+  QString input_add_month = ui->lineEdit_AddMonth->text();
+  QByteArray byteArrayAddMonth = input_add_month.toLocal8Bit();
   char* charArrayAddMonth = byteArrayAddMonth.data();
   charArrayAddMonth[byteArrayAddMonth.size()] = '\0';
 
-  double addsum = 0, addmonth = 0;
-
-  if (!calcController.readX(charArrayAddSum, &addsum) ||
-      !calcController.readX(charArrayAddMonth, &addmonth) ||
-      (addmonth < 1 || addmonth - (int)addmonth > 0)) {
+  double add_sum = 0, add_month = 0;
+  if (!depositController.XReader(char_array_add_sum, &add_sum) ||
+      !depositController.XReader(charArrayAddMonth, &add_month) ||
+      (add_month < 1 || add_month - (int)add_month > 0)) {
     ui->plainTextEdit_dep->setPlainText("Invalid input");
   } else {
-    add = depositController.pushStackNode(add);
-    add->priority = addmonth;
-    add->what = depositController.ADDITION;
-    add->value = addsum;
+
+    depositController.PushToStackAdd(add_sum, add_month);
+
+
   }
 }
 void MainWindow::pushToStackWith() {
-  s21::CalcController calcController(&calcModel);
-  s21::DepositController depositController(&depositModel);
 
-  QString inputWithSum = ui->lineEdit_WithSum->text();
-  QByteArray byteArrayWithSum = inputWithSum.toLocal8Bit();
-  char* charArrayWithSum = byteArrayWithSum.data();
-  charArrayWithSum[byteArrayWithSum.size()] = '\0';
+  QString input_with_sum = ui->lineEdit_WithSum->text();
+  QByteArray byte_array_with_sum = input_with_sum.toLocal8Bit();
+  char* char_array_with_sum = byte_array_with_sum.data();
+  char_array_with_sum[byte_array_with_sum.size()] = '\0';
 
-  QString inputWithMonth = ui->lineEdit_WithMonth->text();
-  QByteArray byteArrayWithMonth = inputWithMonth.toLocal8Bit();
-  char* charArrayWithMonth = byteArrayWithMonth.data();
-  charArrayWithMonth[byteArrayWithMonth.size()] = '\0';
+  QString input_with_month = ui->lineEdit_WithMonth->text();
+  QByteArray byte_array_with_month = input_with_month.toLocal8Bit();
+  char* charArrayWithMonth = byte_array_with_month.data();
+  charArrayWithMonth[byte_array_with_month.size()] = '\0';
 
-  double withsum = 0, withmonth = 0;
+  double with_sum = 0, with_month = 0;
 
-  if (!calcController.readX(charArrayWithSum, &withsum) ||
-      !calcController.readX(charArrayWithMonth, &withmonth) ||
-      (withmonth < 1 || withmonth - (int)withmonth > 0)) {
+  if (!depositController.XReader(char_array_with_sum, &with_sum) ||
+      !depositController.XReader(charArrayWithMonth, &with_month) ||
+      (with_month < 1 || with_month - (int)with_month > 0)) {
     ui->plainTextEdit_dep->setPlainText("Invalid input");
   } else {
-    with = depositController.pushStackNode(with);
-    with->priority = withmonth;
-    with->what = depositController.WITHRAWAL;
-    with->value = withsum;
+
+    depositController.PushToStackWith(with_sum, with_month);
+
   }
 }
 
-void MainWindow::popAndClearStackWith() {
-  s21::DepositController depositController(&depositModel);
-  depositController.freeStack(with);
-  with = nullptr;
-}
-void MainWindow::popAndClearStackAdd() {
-  s21::DepositController depositController(&depositModel);
-  depositController.freeStack(add);
-  add = nullptr;
-}
